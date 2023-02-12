@@ -50,13 +50,14 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_org_lsposed_lspd_service_Dex2OatService_initNative(JNIEnv *env, jobject thiz) {
     char magisk_path[PATH_MAX], cwd[PATH_MAX], *module_name;
-    FILE *fp = popen("magisk --path", "r");
-    fscanf(fp, "%s", magisk_path);
-    fclose(fp);
+//     FILE *fp = popen("magisk --path", "r");
+//     fscanf(fp, "%s", magisk_path);
+//     fclose(fp);
+    sprintf(magisk_path,"/data/adb/ksu");
     getcwd(cwd, PATH_MAX);
     module_name = cwd + std::string_view(cwd).find_last_of('/') + 1;
-    sprintf(kFakeBin32, "%s/.magisk/modules/%s/bin/dex2oat32", magisk_path, module_name);
-    sprintf(kFakeBin64, "%s/.magisk/modules/%s/bin/dex2oat64", magisk_path, module_name);
+    sprintf(kFakeBin32, "%s/modules/%s/bin/dex2oat32", magisk_path, module_name);
+    sprintf(kFakeBin64, "%s/modules/%s/bin/dex2oat64", magisk_path, module_name);
 
     if (GetAndroidApiLevel() == 29) {
         kDex2oat32Path = "/apex/com.android.runtime/bin/dex2oat";
